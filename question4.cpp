@@ -1,36 +1,39 @@
-#include<iostream>
-#include<cctype>
+#include <iostream>
+#include <cctype>
+#include<string>
 using namespace std;
-void check(int z){
-    
-   
-    do
-    {
-       
-      if ((isdigit(z)))
-       cout <<  "Sorry, you entered an invalid number. Please try again" <<endl;
-       
-       cin >> z;
-    } while ((isdigit(z)));
-    
-}
-int main(){
-    int number;
-    cout<<"Enter number between 5 and 10: ";
-    cin >> number;
-    check(number);
-    do
-    {
-       
-        if (number <= 5 || number >= 10)
-        {
-            cout << " You entered " << number <<" Pleas enter a number between 5 and 10 ";
-            cin >> number;
+
+int main() {
+    char input[100];
+    int num;
+    bool isValid = false;
+    bool allDigits;
+    while (!isValid) {
+        cout << "Enter an integer value between 5 and 10: ";
+        cin.getline(input, 100);
+        
+        bool allDigits = true;
+        for (int i = 0; input[i] != '\0'; ++i) {
+            if (!isdigit(input[i])) {
+                allDigits = false;
+                break;
+            }
         }
+
         
-        
-    } while (number <= 5 || number >= 10);
-    cout << "Your input value " << "(" << number << ")" << " has been accepted";
-return 0;
-    
-}   
+        if (allDigits) {
+            num = stoi(input);
+            if (num >= 5 && num <= 10) {
+                isValid = true;
+            } else {
+                cout << "Invalid input. Please enter an integer value between 5 and 10." << endl;
+            }
+        } else {
+            cout << "Invalid input. Please enter an integer value between 5 and 10." << endl;
+        }
+    }
+
+    cout << "Your input value (" << num << ") has been accepted." << endl;
+
+    return 0;
+}
