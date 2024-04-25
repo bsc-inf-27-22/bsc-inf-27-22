@@ -4,6 +4,26 @@
 #include <cctype>
 
 using namespace std;
+    int countVowel(string file){
+          int noVowel = 0;
+          for (int i = 0; i < file.length(); i++){
+                 bool value = (file[i] == 'a' || file[i] == 'e' || file[i] == 'i' || file[i] == 'o' || file[i] == 'u' || file[i] == 'A' || file[i] == 'E' || file[i] == 'I' || file[i] == 'O' || file[i] == 'U');
+                    if (value)
+                        noVowel++;}
+       return noVowel;
+        
+    }
+    int countWord(string data){
+        int noWord = 0;
+        for (int i = 0; i < data.length(); i++)
+        {
+            bool value = (data[i] == ' ');
+            if (value)
+                noWord++;
+        }
+        return noWord + 1;
+        
+    }
 
    void reverse(string reversed){
         for (int i = reversed.length()-1; i >= 0; i-- )
@@ -15,45 +35,20 @@ using namespace std;
    }
 
 
-int main()
-{
-    int m = 0;
-    int n = 0;
+int main(){
     ifstream input("inputFile1.txt");
     input.open("inputFile1.txt");
-    string fileData;
+    string filedata;
 
     if (input.is_open())
     {
         cout<< " Is open " << endl;
 
-        getline(input, fileData);
-        cout<< fileData << endl;}
-
-        for (int i = 0; i < fileData.length(); i++)
-        {
-
-            bool value = (fileData[i] == 'a' || fileData[i] == 'e' || fileData[i] == 'i' || fileData[i] == 'o' || fileData[i] == 'u' || fileData[i] == 'A' || fileData[i] == 'E' || fileData[i] == 'I' || fileData[i] == 'O' || fileData[i] == 'U');
-
-            if (value)
-                m++;
-       
-        }
-        
-        for (int i = 0; i < fileData.length(); i++)
-        {
-
-            bool value = (fileData[i] == ' ');
-
-            if (value)
-                n++;
-       }
-        
-        }
-   cout << "The number of vowels is " << m << endl << "The number of words " << ++n << endl;
-
-   reverse(fileData);
-   input.close();
+        getline(input, filedata);
+        cout<< filedata << endl;}
+        else 
+            cout <<" Didn't find the file" <<endl;
+    input.close();
 
     return 0;
 }
