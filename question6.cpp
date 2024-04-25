@@ -37,15 +37,16 @@ using namespace std;
 
 int main(){
     ifstream input("inputFile1.txt");
-    input.open("inputFile1.txt");
     string filedata;
 
     if (input.is_open())
     {
-        cout<< " Is open " << endl;
-
         getline(input, filedata);
-        cout<< filedata << endl;}
+        cout<< filedata << endl;
+        cout << " Number of vowels are " << countVowel(filedata) <<endl;
+        cout << " The number of words are " << countWord(filedata) <<endl;
+        reverse(filedata);
+        }
         else 
             cout <<" Didn't find the file" <<endl;
     input.close();
