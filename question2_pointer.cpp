@@ -7,7 +7,7 @@ int main(){
     cin >> num1;
     cout << " Enter the number of column: "<<endl;
     cin >> num2;
-    int myarray[num1][num2];
+    double myarray[num1][num2];
     //myarray = new int[num1][num2];
     
     for (int i = 0; i < num1; i++)
