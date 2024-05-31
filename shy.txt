@@ -1,0 +1,170 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+enum TypeOfIngredient {
+    None,
+    Flour,
+    Egg,
+    Sugar,
+    Salt,
+    BakingPowder,
+    Milk
+};
+class Ingredient {
+private:
+    int amount;
+    TypeOfIngredient type;
+public:
+ingredient() : amount(0), type(None) {}
+    Ingredient(int amt, TypeOfIngredient tp) : amount(amt), type(tp) {}
+
+    
+    int GetAmount() const { return amount; }
+    TypeOfIngredient GetType() const { return type; }
+
+    
+    bool operator==(const Ingredient& other) const {
+        return type == other.type;
+    }
+
+    std::string IngredientName() const {
+        switch (type) {
+            case Flour: return "Flour";
+            case Egg: return "Egg";
+            case Sugar: return "Sugar";
+            case Salt: return "Salt";
+            case BakingPowder: return "Baking Powder";
+            case Milk: return "Milk";
+            default: return "Unknown";
+        }
+    }
+};
+class Cake {
+private:
+    Ingredient* ingredients[5];
+    int validIngredientCount;
+
+    void AddIngredient();
+    void SaveIngredientsToFile();
+    void ShowAllIngredients();
+    TypeOfIngredient SelectIngredientType();
+
+public:
+    Cake();
+    void Bake();
+};
+
+Cake::Cake() {
+    for (int i = 0; i < 5; ++i) {
+        ingredients[i] = nullptr;
+    }
+    validIngredientCount = 0;
+}
+
+void Cake::AddIngredient() {
+    if (validIngredientCount == 5) {
+        std::cout << "The array is full." << std::endl;
+        return;
+    }
+
+    Ingredient* newIngredient = new Ingredient;
+    newIngredient->type = SelectIngredientType();
+    std::cout << "Enter the amount of the ingredient: ";
+    std::cin >> newIngredient->amount;
+
+    bool alreadyExists = false;
+    for (int i = 0; i < 5; ++i) {
+        if (ingredients[i] != nullptr && ingredients[i]->type == newIngredient->type) {
+            alreadyExists = true;
+            break;
+        }
+    }
+
+    if (alreadyExists) {
+        std::cout << "Ingredient already exists. Not added." << std::endl;
+        delete newIngredient;
+        return;
+    }
+
+    for (int i = 0; i < 5; ++i) {
+        if (ingredients[i] == nullptr) {
+            ingredients[i] = newIngredient;
+            ++validIngredientCount;
+            std::cout << "Ingredient added successfully." << std::endl;
+            return;
+        }
+    }
+}
+
+void Cake::SaveIngredientsToFile() {
+    std::ofstream file("cake.txt");
+    if (!file.is_open()) {
+        std::cout << "Failed to open/create file." << std::endl;
+        return;
+    }
+
+    for (int i = 0; i < 5; ++i) {
+        if (ingredients[i] != nullptr) {
+            file << "Ingredient: " << ingredients[i]->type << ", Amount: " << ingredients[i]->amount << std::endl;
+        }
+    }
+
+    file.close();
+    std::cout << "Ingredients saved to file successfully." << std::endl;
+}
+
+void Cake::ShowAllIngredients() {
+    bool hasValidIngredients = false;
+    for (int i = 0; i < 5; ++i) {
+        if (ingredients[i] != nullptr) {
+            std::cout << "Ingredient: " << ingredients[i]->type << ", Amount: " << ingredients[i]->amount << std::endl;
+            hasValidIngredients = true;
+        }
+    }
+
+    if (!hasValidIngredients) {
+        std::cout << "No valid ingredients to show." << std::endl;
+    }
+}
+
+TypeOfIngredient Cake::SelectIngredientType() {
+    int choice;
+    std::cout << "Type of ingredient options:" << std::endl;
+    std::cout << "1- Flour\n2- Egg\n3- Sugar\n4- Salt\n5- Baking Powder\n6- Milk" << std::endl;
+    std::cout << "Please select an ingredient: ";
+    std::cin >> choice;
+    return static_cast<TypeOfIngredient>(choice - 1);
+}
+
+void Cake::Bake() {
+    int option;
+    do {
+        std::cout << "Options\n1- Add an ingredient.\n2- Show all added ingredients.\n3- Save ingredients to file.\n4- Quit.\nWhat would you like to do? ";
+        std::cin >> option;
+
+        switch (option) {
+            case 1:
+                AddIngredient();
+                break;
+            case 2:
+                ShowAllIngredients();
+                break;
+            case 3:
+                SaveIngredientsToFile();
+                break;
+            case 4:
+                std::cout << "Quitting..." << std::endl;
+                break;
+            default:
+                std::cout << "Invalid option. Please try again." << std::endl;
+        }
+    } while (option != 4);
+}
+
+int main() {
+    Cake cakeObject = Cake();
+    cakeObject.Bake();
+    return 0;
+}
